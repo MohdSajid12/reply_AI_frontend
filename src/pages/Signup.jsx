@@ -14,8 +14,6 @@ function Signup() {
     password: "",
   });
 
-  const [otp, setOtp] = useState("");
-  const [showOtpModal, setShowOtpModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
@@ -29,11 +27,16 @@ function Signup() {
       const res = await axios.post(`${API}/auth/signup`, form);
 
       if (res.data.success) {
-        toast.success("OTP sent to your email 📩");
-        setShowOtpModal(true);
+        toast.success("Signup successful 🎉");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+
       } else {
         toast.error(res.data.message);
       }
+
     } catch (err) {
       toast.error(err.response?.data?.message || "Signup failed");
     } finally {
@@ -41,48 +44,11 @@ function Signup() {
     }
   };
 
-  const verifyOtp = async () => {
-    if (!otp) return toast.error("Enter OTP");
-
-    try {
-      setLoading(true);
-
-      const res = await axios.post(`${API}/auth/verify-email`, {
-        email: form.email,
-        otp,
-      });
-
-      if (res.data.success) {
-        toast.success("Email verified successfully 🎉");
-        setShowOtpModal(false);
-        navigate("/");
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch {
-      toast.error("Invalid OTP");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resendOtp = async () => {
-    try {
-      const res = await axios.post(`${API}/auth/resend-otp`, {
-        email: form.email,
-      });
-
-      toast.success(res.data.message);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Something went wrong");
-    }
-  };
-
   return (
-    <div className="container-fluid vh-100 px-0" >
+    <div className="container-fluid vh-100 px-0">
       <div className="row h-100 g-0">
 
-        {/* LEFT SIDE (same as login) */}
+        {/* LEFT SIDE */}
         <div
           className="col-md-7 d-none d-md-flex flex-column justify-content-center align-items-center text-center"
           style={{
@@ -100,7 +66,6 @@ function Signup() {
           <p style={{ maxWidth: "450px", opacity: 0.85 }}>
             Join now and start generating smart, professional email replies instantly.
           </p>
-
         </div>
 
         {/* RIGHT SIDE */}
@@ -116,17 +81,22 @@ function Signup() {
             }}
           >
             <h4 className="fw-bold text-center mb-1">Create Account</h4>
+
             <p className="text-center text-muted small mb-4">
               Start your journey 🚀
             </p>
 
             {/* Name */}
             <div className="mb-3">
-              <label className="form-label small text-muted">Full Name</label>
+              <label className="form-label small text-muted">
+                Full Name
+              </label>
+
               <input
                 type="text"
                 className="form-control"
                 placeholder="Enter name"
+                value={form.name}
                 onChange={(e) =>
                   setForm({ ...form, name: e.target.value })
                 }
@@ -135,11 +105,15 @@ function Signup() {
 
             {/* Email */}
             <div className="mb-3">
-              <label className="form-label small text-muted">Email</label>
+              <label className="form-label small text-muted">
+                Email
+              </label>
+
               <input
                 type="email"
                 className="form-control"
                 placeholder="Enter email"
+                value={form.email}
                 onChange={(e) =>
                   setForm({ ...form, email: e.target.value })
                 }
@@ -148,17 +122,22 @@ function Signup() {
 
             {/* Password */}
             <div className="mb-3">
-              <label className="form-label small text-muted">Password</label>
+              <label className="form-label small text-muted">
+                Password
+              </label>
+
               <input
                 type="password"
                 className="form-control"
                 placeholder="Enter password"
+                value={form.password}
                 onChange={(e) =>
                   setForm({ ...form, password: e.target.value })
                 }
               />
             </div>
 
+            {/* Button */}
             <button
               className="btn w-100"
               style={{
@@ -172,6 +151,7 @@ function Signup() {
               {loading ? "Please wait..." : "Sign Up"}
             </button>
 
+            {/* Login Link */}
             <p className="text-center small mt-3">
               Already have an account?{" "}
               <Link to="/">Login</Link>
@@ -181,42 +161,6 @@ function Signup() {
         </div>
 
       </div>
-
-      {/* OTP MODAL */}
-      {showOtpModal && (
-        <div className="modal d-block" style={{ background: "#00000080" }}>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content p-4 rounded-4">
-
-              <h5 className="mb-3 text-center">Verify Email</h5>
-
-              <input
-                type="text"
-                className="form-control mb-3"
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-              />
-
-              <button
-                className="btn btn-dark w-100 mb-2"
-                onClick={verifyOtp}
-                disabled={loading}
-              >
-                {loading ? "Verifying..." : "Verify OTP"}
-              </button>
-
-              <button
-                className="btn btn-link w-100"
-                onClick={resendOtp}
-              >
-                Resend OTP
-              </button>
-
-            </div>
-          </div>
-        </div>
-      )}
 
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
