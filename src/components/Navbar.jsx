@@ -64,7 +64,7 @@ function Navbar() {
             fontWeight: "500"
           }}
         >
-          S
+          
         </div>
 
         {/* Logout */}
