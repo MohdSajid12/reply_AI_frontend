@@ -45,27 +45,6 @@ function Navbar() {
 
       </div>
 
-      {/* Right Side */}
-      <div className="d-flex align-items-center gap-3">
-
-        {/* Avatar */}
-        <div
-          title="User"
-          style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
-            background: "#111827",
-            color: "#fff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "14px",
-            fontWeight: "500"
-          }}
-        >
-          
-        </div>
 
         {/* Logout */}
         <button
