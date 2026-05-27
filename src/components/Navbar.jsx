@@ -45,16 +45,14 @@ function Navbar() {
 
       </div>
 
+      {/* Logout */}
+      <button
+        className="btn btn-outline-danger btn-sm px-3"
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
 
-        {/* Logout */}
-        <button
-          className="btn btn-outline-danger btn-sm px-3"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-
-      </div>
     </nav>
   );
 }
